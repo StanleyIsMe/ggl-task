@@ -7,7 +7,7 @@ on:
       - "main"
 
 env:
-  GOLANG_VERSION: "1.23.3"
+  GOLANG_VERSION: "1.23.7"
   LINTER_VERSION: "v1.62.0"
   TRIVY_VERSION: "v0.57.1"
 

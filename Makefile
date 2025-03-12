@@ -58,7 +58,7 @@ build: ## build docker image
 	-f Dockerfile \
 	-t $(PROJECT_NAME) \
 	--platform linux/arm64 \
-	--build-arg GO_VERSION=1.23.3 \
+	--build-arg GO_VERSION=1.23.7 \
 	--build-arg GO_GOOS=linux \
 	--build-arg GO_GOARCH=arm64 \
 	--build-arg GLOBAL_VAR_PKG=server \
