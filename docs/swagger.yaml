@@ -1,0 +1,220 @@
+basePath: /api/v1
+definitions:
+  ggltask_internal_task_domain_entities.Task:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      status:
+        $ref: '#/definitions/task.TaskStatus'
+      updated_at:
+        type: string
+    type: object
+  task.TaskStatus:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-comments:
+      TaskStatusCompleted: task is completed
+      TaskStatusIncomplete: task is incomplete
+    x-enum-varnames:
+    - TaskStatusIncomplete
+    - TaskStatusCompleted
+  task_delivery_http.CreateTaskRequest:
+    properties:
+      name:
+        maxLength: 50
+        type: string
+    required:
+    - name
+    type: object
+  task_delivery_http.CreateTaskResponse:
+    properties:
+      task:
+        $ref: '#/definitions/ggltask_internal_task_domain_entities.Task'
+    type: object
+  task_delivery_http.ErrorResponse:
+    properties:
+      error_code:
+        type: string
+      error_message:
+        type: string
+    type: object
+  task_delivery_http.ListTasksResponse:
+    properties:
+      tasks:
+        items:
+          $ref: '#/definitions/ggltask_internal_task_domain_entities.Task'
+        type: array
+      total:
+        type: integer
+    type: object
+  task_delivery_http.UpdateTaskRequest:
+    properties:
+      name:
+        maxLength: 50
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/task.TaskStatus'
+        enum:
+        - 0
+        - 1
+    required:
+    - name
+    type: object
+  task_delivery_http.UpdateTaskResponse:
+    properties:
+      task:
+        $ref: '#/definitions/ggltask_internal_task_domain_entities.Task'
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: grimmh6838@gmail.com
+    name: Stanley Hsieh
+  description: API Server for Gogolook interview task
+  license:
+    name: GNU General Public License v3.0
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+  title: Gogolook Task API
+  version: "1.0"
+paths:
+  /api/v1/tasks:
+    get:
+      consumes:
+      - application/json
+      description: List tasks
+      parameters:
+      - in: query
+        minimum: 1
+        name: page_index
+        required: true
+        type: integer
+      - in: query
+        maximum: 100
+        minimum: 1
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List tasks response
+          schema:
+            $ref: '#/definitions/task_delivery_http.ListTasksResponse'
+        "400":
+          description: invalid request
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+      summary: List tasks
+      tags:
+      - task
+    post:
+      consumes:
+      - application/json
+      description: Create a new task
+      parameters:
+      - description: Create task request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/task_delivery_http.CreateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Create task response
+          schema:
+            $ref: '#/definitions/task_delivery_http.CreateTaskResponse'
+        "400":
+          description: invalid request
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+      summary: Create task
+      tags:
+      - task
+  /api/v1/tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a task
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: empty result
+        "400":
+          description: invalid request
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+      summary: Delete task
+      tags:
+      - task
+    put:
+      consumes:
+      - application/json
+      description: Update a task
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update task request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/task_delivery_http.UpdateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update task response
+          schema:
+            $ref: '#/definitions/task_delivery_http.UpdateTaskResponse'
+        "400":
+          description: invalid request
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/task_delivery_http.ErrorResponse'
+      summary: Update task
+      tags:
+      - task
+swagger: "2.0"
