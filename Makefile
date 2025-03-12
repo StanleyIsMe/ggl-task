@@ -10,7 +10,8 @@ SHELL = /bin/bash
 # test #
 ########
 
-test: test-race test-leak ## launch all tests
+test:  ## launch all tests
+	go test ./... -cover -race -leak
 
 test-race: ## launch all tests with race detection
 	go test ./... -cover -race

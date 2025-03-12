@@ -58,7 +58,7 @@ jobs:
       - name: Run security scan with govuln
         run: |
           make vuln-scan
-  leak-test:
+  unit-test:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -69,6 +69,6 @@ jobs:
         with:
           go-version: ${{ env.GOLANG_VERSION }}
           cache: true
-      - name: Test with leak detector
+      - name: Test with coverage
         run: |
-          make test-leak
+          make test
