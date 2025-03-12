@@ -73,7 +73,7 @@ build: ## build docker image
 #########
 
 up: ## run docker image
-	docker run -d --name $(PROJECT_NAME) 
+	docker run -d --rm -p 8080:8080 -e APP_ENV=local --name $(PROJECT_NAME) $(PROJECT_NAME)
 
 down: ## stop docker image
 	docker stop $(PROJECT_NAME)
