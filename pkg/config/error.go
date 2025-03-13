@@ -2,14 +2,6 @@ package config
 
 import "fmt"
 
-type MissingBaseConfigError struct {
-	Err error
-}
-
-func (e *MissingBaseConfigError) Error() string {
-	return fmt.Sprintf("missing base config: %v", e.Err)
-}
-
 type MissingEnvConfigError struct {
 	Env string
 	Err error

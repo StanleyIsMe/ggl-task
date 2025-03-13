@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"ggltask/internal/api/middleware"
 	taskHTTP "ggltask/internal/task/delivery/http"
 	taskRepo "ggltask/internal/task/repository/memory"
 	taskUseCase "ggltask/internal/task/usecase"
@@ -25,7 +24,6 @@ func (a *API) registerHTTPSvc(_ context.Context) {
 	taskUseCase := taskUseCase.NewTaskUseCaseImpl(taskRepository)
 
 	httpRouter.Use(
-		middleware.Cors(),
 		pkgMiddleware.GinRecover(),
 		pkgMiddleware.GinContextLogger(a.logger), //nolint:contextcheck
 		pkgMiddleware.GinTimeout(defaultTimeout), //nolint:contextcheck

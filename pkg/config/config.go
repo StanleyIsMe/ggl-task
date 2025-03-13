@@ -17,10 +17,6 @@ func LoadWithEnv[CustomConfigT any](_ context.Context, configPath string) (*Conf
 		currEnv = e
 	}
 
-	if err := cleanenv.ReadConfig(configPath+"/base.yaml", &cfg); err != nil {
-		return nil, fmt.Errorf("read base config failed: %w", &MissingBaseConfigError{Err: err})
-	}
-
 	cfg.Env = currEnv
 
 	if err := cleanenv.ReadConfig(fmt.Sprintf("%s/%s.yaml", configPath, cfg.Env), &cfg); err != nil {
